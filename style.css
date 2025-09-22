@@ -10,26 +10,45 @@ body {
 
 .maze {
   position: relative;
-  width: 400px;
-  height: 200px;
+  width: 500px;
+  height: 250px;
   margin: 0 auto 20px auto;
   border: 2px solid #333;
   background-color: #c2f0c2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.apple {
-  position: absolute;
+.apples img {
   width: 50px;
-  top: 50px;
-  left: 50px;
+  margin: 0 5px;
 }
 
 .chest {
+  position: relative;
+  width: 80px;
+  text-align: center;
+}
+
+.chest img {
+  width: 80px;
+}
+
+.drop-zone {
   position: absolute;
-  width: 60px;
-  top: 100px;
-  right: 50px;
-  transition: transform 0.5s;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ffcc66;
+  border-radius: 10px;
+  font-size: 24px;
+  user-select: none;
 }
 
 .numbers {
