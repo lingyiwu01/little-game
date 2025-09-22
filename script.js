@@ -1,46 +1,37 @@
-const levels = [
-  {question: "关卡1: x + 3 = 7 🕵️‍♂️🍎", options: [3, 4, 5], answer: 4},
-  {question: "关卡2: 2x = 8 🌉🍊", options: [2, 4, 6], answer: 4},
-  {question: "关卡3: y + 5 = 12 🏝️🍎", options: [5, 6, 7], answer: 7},
-  {question: "关卡4: (x + 2) * 2 = 12 🏰💰", options: [4, 5, 6], answer: 4}
-];
+const numbers = document.querySelectorAll('.number');
+const chest = document.querySelector('.chest');
+const correctSound = document.getElementById('correct-sound');
+const openChestSound = document.getElementById('open-chest-sound');
 
-let currentLevel = 0;
+numbers.forEach(number => {
+  number.addEventListener('dragstart', dragStart);
+});
 
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-const messageEl = document.getElementById("message");
+chest.addEventListener('dragover', dragOver);
+chest.addEventListener('drop', drop);
 
-function loadLevel(levelIndex) {
-  const level = levels[levelIndex];
-  questionEl.textContent = level.question;
-  optionsEl.innerHTML = "";
-  messageEl.textContent = "";
+let draggedNumber = null;
 
-  level.options.forEach(opt => {
-    const btn = document.createElement("div");
-    btn.className = "option";
-    btn.textContent = "💰 " + opt;
-    btn.onclick = () => checkAnswer(opt, level.answer);
-    optionsEl.appendChild(btn);
-  });
+function dragStart(e) {
+  draggedNumber = e.target;
 }
 
-function checkAnswer(choice, answer) {
-  if (choice === answer) {
-    messageEl.textContent = "🎉 正确！宝箱打开啦！";
-    currentLevel++;
-    if (currentLevel < levels.length) {
-      setTimeout(() => loadLevel(currentLevel), 1500);
-    } else {
-      messageEl.textContent = "🏆 恭喜你完成所有关卡！";
-      questionEl.textContent = "终极宝藏出现啦！💎✨";
-      optionsEl.innerHTML = "";
-    }
+function dragOver(e) {
+  e.preventDefault();
+}
+
+function drop(e) {
+  const value = parseInt(draggedNumber.textContent);
+  if(value === 3) { // 正确答案
+    correctSound.play();
+    chest.style.transform = 'scale(1.2) rotate(15deg)';
+    setTimeout(() => {
+      chest.style.transform = 'scale(1) rotate(0deg)';
+      openChestSound.play();
+      alert('答对了！宝箱打开啦！🎉');
+    }, 500);
   } else {
-    messageEl.textContent = "❌ 错啦，再试一次！";
+    alert('不对哦，再试试！');
   }
 }
 
-// 开始游戏
-loadLevel(currentLevel);
