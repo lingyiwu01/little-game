@@ -2,18 +2,60 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>小侦探数学冒险 🕵️‍♂️🍎🪙</title>
+  <title>关卡1：迷宫入门 🍎🎁</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>小侦探数学冒险 🕵️‍♂️</h1>
-  <div id="game-area"></div>
+  <h1>关卡1：迷宫入门 🍎🎁</h1>
+
+  <div class="equation-area">
+    <!-- 左边 5 个苹果 -->
+    <div class="left-apples">
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+    </div>
+
+    <!-- 加号 -->
+    <div class="plus">+</div>
+
+    <!-- 中间宝箱 -->
+    <div class="chest">
+      <span class="chest-emoji">🎁</span>
+      <div class="drop-zone">?</div>
+    </div>
+
+    <!-- 等号 -->
+    <div class="equals">=</div>
+
+    <!-- 右边 8 个苹果 -->
+    <div class="right-apples">
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+      <span class="apple">🍎</span>
+    </div>
+  </div>
+
+  <!-- 可拖动数字 -->
+  <div class="numbers">
+    <p>拖动正确数字到宝箱里：</p>
+    <div class="number" draggable="true">2</div>
+    <div class="number" draggable="true">3</div>
+    <div class="number" draggable="true">4</div>
+  </div>
 
   <audio id="correct-sound" src="assets/correct.mp3"></audio>
-  <audio id="wrong-sound" src="assets/wrong.mp3"></audio>
-  <audio id="treasure-sound" src="assets/treasure.mp3"></audio>
+  <audio id="open-chest-sound" src="assets/treasure.mp3"></audio>
 
   <script src="script.js"></script>
 </body>
 </html>
+
 
