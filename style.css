@@ -2,56 +2,57 @@ body {
   font-family: 'Arial', sans-serif;
   text-align: center;
   background-color: #fff8e7;
-  margin: 0;
-  padding: 0;
 }
 
-h1 {
-  margin-top: 20px;
+.equation-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
 
-#game-area {
-  margin-top: 30px;
+.left-apples .apple,
+.right-apples .apple {
+  font-size: 40px;
+  margin: 0 3px;
+}
+
+.plus, .equals {
+  font-size: 36px;
+  margin: 0 10px;
+}
+
+.chest {
   position: relative;
-}
-
-/* 通用宝箱/城堡/天平样式 */
-.chest, .castle, .balance {
-  display: inline-block;
-  position: relative;
-  margin: 20px;
-}
-
-.chest img, .castle img, .balance img {
   width: 80px;
-  transition: transform 0.5s;
+  margin: 0 10px;
+  font-size: 50px;
 }
 
-.chest.open img, .castle.open img {
-  transform: translateY(-20px) rotateX(20deg);
-}
-
-.drop-zone, .balance-zone {
+.drop-zone {
   position: absolute;
-  bottom: -40px;
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
   background-color: #ffcc66;
   border-radius: 10px;
   font-size: 24px;
   user-select: none;
 }
 
-/* 数字/水果拖动 */
-.number, .fruit {
+.numbers {
+  margin-top: 30px;
+}
+
+.number {
   display: inline-block;
   width: 50px;
   height: 50px;
   line-height: 50px;
-  margin: 10px;
+  margin: 0 10px;
   background-color: #ffcc66;
   border-radius: 10px;
   font-size: 24px;
@@ -59,14 +60,20 @@ h1 {
   user-select: none;
 }
 
-/* 闪光效果 */
+/* 宝箱动画 */
+.chest.open {
+  transform: translateY(-10px);
+  transition: transform 0.5s;
+}
+
+/* 闪光动画 */
 .flash {
   position: absolute;
   width: 100px;
   height: 100px;
   background: radial-gradient(circle, #fffacd 0%, transparent 70%);
   border-radius: 50%;
-  top: -10px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   animation: flashAnim 0.5s ease-out;
@@ -76,18 +83,6 @@ h1 {
   0% { opacity: 1; transform: translateX(-50%) scale(0); }
   50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
   100% { opacity: 0; transform: translateX(-50%) scale(1); }
-}
-
-/* 苹果/宝藏掉落 */
-.apple-drop, .coin-drop {
-  position: absolute;
-  width: 40px;
-  animation: drop 1s forwards;
-}
-
-@keyframes drop {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(100px); opacity: 0; }
 }
 
 /* 错误震动 */
@@ -102,5 +97,4 @@ h1 {
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
 }
-
 
