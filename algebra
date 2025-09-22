@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字迷宫：宝箱冒险</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🕵️ 小侦探的宝箱冒险</h1>
+  <div id="game-container">
+    <div id="question"></div>
+    <div id="options"></div>
+    <div id="message"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
