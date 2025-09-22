@@ -1,102 +1,24 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #fff8e7;
-  margin: 0;
-  padding: 0;
-}
+const numbers = document.querySelectorAll('.number');
+const dropZone = document.getElementById('drop-zone');
+const chest = document.getElementById('chest');
+const successSound = document.getElementById('success-sound');
 
-h1 { margin-top: 20px; }
+numbers.forEach(num => {
+  num.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text', e.target.textContent);
+  });
+});
 
-#game-area { margin-top: 30px; position: relative; }
+dropZone.addEventListener('dragover', e => e.preventDefault());
 
-/* 水果形状 */
-.red-circle, .orange-circle, .yellow-triangle, .yellow-triangle-chicken, .white-square {
-  display: inline-block;
-  margin: 5px;
-}
-
-.red-circle, .orange-circle {
-  width: 50px; height: 50px;
-  border-radius: 50%;
-}
-
-.red-circle { background-color: red; }
-.orange-circle { background-color: orange; }
-
-/* 香蕉三角形 */
-.yellow-triangle, .yellow-triangle-chicken {
-  width: 0; height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 50px solid yellow;
-}
-
-/* 兔子白色正方形 */
-.white-square {
-  width: 50px; height: 50px;
-  background-color: white;
-  border: 2px solid black;
-}
-
-/* 宝箱矩形 */
-.chest {
-  width: 60px; height: 40px;
-  background-color: #8B4513;
-  position: relative;
-}
-
-.drop-zone {
-  width: 50px; height: 50px;
-  line-height: 50px;
-  background-color: #ffcc66;
-  border-radius: 10px;
-  font-size: 24px;
-  display: inline-block;
-  margin-top: 10px;
-  user-select: none;
-}
-
-/* 数字/拖动 */
-.number, .fruit {
-  display: inline-block;
-  width: 50px; height: 50px;
-  line-height: 50px;
-  margin: 5px;
-  background-color: #ffcc66;
-  border-radius: 10px;
-  font-size: 24px;
-  cursor: grab;
-  user-select: none;
-}
-
-/* 宝箱开动画 */
-.chest.open { transform: translateY(-10px); transition: 0.5s; }
-
-/* 闪光 */
-.flash {
-  position: absolute;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, #fffacd 0%, transparent 70%);
-  border-radius: 50%;
-  top: -20px; left: 50%;
-  transform: translateX(-50%);
-  animation: flashAnim 0.5s ease-out;
-}
-
-@keyframes flashAnim {
-  0% { opacity: 1; transform: translateX(-50%) scale(0); }
-  50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
-  100% { opacity: 0; transform: translateX(-50%) scale(1); }
-}
-
-/* 错误震动 */
-.shake { animation: shakeAnim 0.3s; }
-@keyframes shakeAnim {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
-}
-
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  const value = e.dataTransfer.getData('text');
+  if (value === '3') {
+    dropZone.textContent = `✔ 正确！宝箱打开了 🎁`;
+    successSound.play();
+    chest.textContent = '🪙'; // 打开宝箱动画效果，可以直接换 emoji
+  } else {
+    dropZone.textContent = `❌ 错误，试试别的数字`;
+  }
+});
