@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>数字迷宫：宝箱冒险</title>
+  <title>Math Adventure - 关卡1</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🕵️ 小侦探的宝箱冒险</h1>
-  <div id="game-container">
-    <div id="question"></div>
-    <div id="options"></div>
-    <div id="message"></div>
+  <h1>关卡1：迷宫入门 🍎🪙</h1>
+  <div class="game-area">
+    <div class="maze">
+      <img src="assets/apple.png" class="apple" alt="苹果" />
+      <img src="assets/chest.png" class="chest" alt="宝箱" />
+    </div>
+    <div class="question">
+      <p>已经收集了 <strong>5 个苹果</strong>，宝箱里有几个苹果？拖动正确数字到宝箱！</p>
+      <div class="numbers">
+        <div class="number" draggable="true">2</div>
+        <div class="number" draggable="true">3</div>
+        <div class="number" draggable="true">4</div>
+      </div>
+    </div>
   </div>
+
+  <audio id="correct-sound" src="assets/correct.mp3"></audio>
+  <audio id="open-chest-sound" src="assets/treasure.mp3"></audio>
+
   <script src="script.js"></script>
 </body>
 </html>
+
