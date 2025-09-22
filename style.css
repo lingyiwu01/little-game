@@ -1,0 +1,43 @@
+body {
+  font-family: "Comic Sans MS", cursive;
+  text-align: center;
+  background: linear-gradient(#a8edea, #fed6e3);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-top: 20px;
+  color: #333;
+}
+
+#game-container {
+  margin-top: 40px;
+}
+
+#question {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.option {
+  display: inline-block;
+  margin: 10px;
+  padding: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  border: 3px solid #444;
+  border-radius: 12px;
+  background: gold;
+  transition: transform 0.2s;
+}
+
+.option:hover {
+  transform: scale(1.1);
+}
+
+#message {
+  font-size: 24px;
+  margin-top: 20px;
+}
+
