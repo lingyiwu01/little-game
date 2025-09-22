@@ -52,7 +52,7 @@ function level3(){
     <h2>关卡 3：海岛宝箱</h2>
     <p>鸡兔同笼问题：</p>
     <p>小笼子里共有 25 只小动物，其中有小鸡和小兔子。共有 70 只脚。</p>
-    <p>拖动钥匙数字到宝箱：</p>
+    <p>请问鸡总共有多少只？：</p>
     <div id="options">
       <div class="draggable" draggable="true">15</div>
       <div class="draggable" draggable="true">10</div>
