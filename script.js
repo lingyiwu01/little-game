@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const character = document.getElementById("character");
   const treasure = document.getElementById("treasure");
-  const nextBtn = document.getElementById("next-btn");
   const map = document.getElementById("map");
 
   let currentLevel = 0;
@@ -29,21 +28,37 @@ document.addEventListener("DOMContentLoaded", () => {
     nextStep();
   }
 
-  function openTreasure() {
+  function openTreasure(callback) {
     treasure.classList.add("open");
+    setTimeout(() => {
+      treasure.classList.remove("open");
+      if(callback) callback();
+    }, 1200);
   }
 
   function setupLevel(level) {
+    map.innerHTML = ""; // 清空地图元素
     treasure.classList.remove("open");
-    map.innerHTML = ""; // 清空地图元素，避免残留
+
     if(level === 0){
-      moveCharacter(levelPaths[level], ()=> alert("到达宝箱！拖动正确数字开宝箱"));
+      // 关卡1：迷宫入门 + 拖动数字开宝箱
+      moveCharacter(levelPaths[level], () => {
+        alert("到达宝箱！拖动正确数字开宝箱");
+        // 模拟拖动正确数字开宝箱
+        openTreasure(() => setupLevel(1));
+      });
     } else if(level === 1){
+      // 关卡2：天平桥
       const balance = document.createElement("div");
       balance.id = "balance";
       map.appendChild(balance);
-      moveCharacter(levelPaths[level], ()=> alert("到达天平！拖动水果平衡"));
+      moveCharacter(levelPaths[level], () => {
+        alert("到达天平！拖动水果平衡");
+        // 模拟完成天平平衡
+        openTreasure(() => setupLevel(2));
+      });
     } else if(level === 2){
+      // 关卡3：鸡兔同笼
       for(let i=0;i<15;i++){
         const chicken = document.createElement("div");
         chicken.className="chicken";
@@ -60,20 +75,22 @@ document.addEventListener("DOMContentLoaded", () => {
         rabbit.innerText="🐇";
         map.appendChild(rabbit);
       }
-      moveCharacter(levelPaths[level], ()=> alert("到达宝箱！拖动正确数字开宝箱"));
+      moveCharacter(levelPaths[level], () => {
+        alert("到达宝箱！拖动正确数字开宝箱");
+        openTreasure(() => setupLevel(3));
+      });
     } else if(level === 3){
-      moveCharacter(levelPaths[level], ()=> {
+      // 关卡4：终极宝藏
+      moveCharacter(levelPaths[level], () => {
         alert("到达城堡！解方程开宝藏");
         openTreasure();
       });
     }
   }
 
-  nextBtn.addEventListener("click", ()=>{
-    setupLevel(currentLevel);
-    currentLevel++;
-    if(currentLevel>=4) nextBtn.style.display="none";
-  });
+  // 自动加载第一关
+  setupLevel(currentLevel);
 
 });
+
 
