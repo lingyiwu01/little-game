@@ -1,108 +1,133 @@
-const gameArea = document.getElementById('game-area');
-const correctSound = document.getElementById('correct-sound');
-const wrongSound = document.getElementById('wrong-sound');
-const treasureSound = document.getElementById('treasure-sound');
+const gameContainer = document.getElementById("game-container");
+const nextBtn = document.getElementById("next-btn");
 
 let currentLevel = 0;
 
 const levels = [
-  { // 关卡1：迷宫入门
-    type: 'chest',
-    title: '关卡1：迷宫入门',
-    left: '🍎 🍎 🍎 🍎 🍎',
-    right: '🍎 🍎 🍎 🍎 🍎 🍎 🍎 🍎',
-    answer: 3,
-    options: [2,3,4]
+  {
+    title: "关卡1：迷宫入门",
+    description: "5🍎 + 宝箱 = 8🍎，拖动正确数字开宝箱",
+    setup: () => {
+      gameContainer.innerHTML = `
+        <p>5 🍎 + 🎁 = 8 🍎</p>
+        <div id="choices">
+          <div class="draggable" draggable="true" data-value="2">2</div>
+          <div class="draggable" draggable="true" data-value="3">3</div>
+          <div class="draggable" draggable="true" data-value="4">4</div>
+        </div>
+        <div id="drop" class="droppable">🎁</div>
+      `;
+      initDragDrop(2);
+    }
   },
-  { // 关卡2：天平桥
-    type: 'balance',
-    title: '关卡2：天平桥',
-    fruits: ['🍏','🍊','🍌'],
-    answer: [3,2,5] // 示例答案
+  {
+    title: "关卡2：天平桥",
+    description: "平衡水果天平",
+    setup: () => {
+      gameContainer.innerHTML = `
+        <p>拖动水果到天平使它平衡</p>
+        <p>式子1：左 3 🍎 + 6 🍊 = 右 5 🍌</p>
+        <p>式子2：左 1 🍎 + 1 🍌 = 右 2 🍊</p>
+        <div id="choices">
+          <div class="draggable" draggable="true" data-value="1">🍎</div>
+          <div class="draggable" draggable="true" data-value="2">🍊</div>
+          <div class="draggable" draggable="true" data-value="3">🍌</div>
+        </div>
+        <div id="drop" class="droppable">天平⚖️</div>
+      `;
+      initDragDrop(null, true);
+    }
   },
-  { // 关卡3：海岛宝箱
-    type: 'chest',
-    title: '关卡3：海岛宝箱',
-    question: '小鸡+小兔=25，脚70',
-    answer: [10,15],
-    options:[5,10,15,20]
+  {
+    title: "关卡3：海岛宝箱",
+    description: "鸡兔同笼问题",
+    setup: () => {
+      gameContainer.innerHTML = `
+        <p>小笼子里共有25只小动物（鸡和兔子），共有70只脚</p>
+        <p>鸡每只2只脚，兔子每只4只脚</p>
+        <p>拖动数字钥匙到宝箱🎁</p>
+        <div id="choices">
+          <div class="draggable" draggable="true" data-value="10">10</div>
+          <div class="draggable" draggable="true" data-value="15">15</div>
+          <div class="draggable" draggable="true" data-value="25">25</div>
+        </div>
+        <div id="drop" class="droppable">🎁</div>
+      `;
+      initDragDrop([15,10]);
+    }
   },
-  { // 关卡4：终极宝藏城堡
-    type: 'castle',
-    title: '关卡4：终极宝藏城堡',
-    question: '(x+2)*2=12',
-    answer: 4,
-    options:[3,4,5]
+  {
+    title: "关卡4：终极宝藏城堡",
+    description: "解方程开宝藏",
+    setup: () => {
+      gameContainer.innerHTML = `
+        <p>(x + 2) * 2 = 12</p>
+        <p>拖动正确数字开宝藏🏰</p>
+        <div id="choices">
+          <div class="draggable" draggable="true" data-value="2">2</div>
+          <div class="draggable" draggable="true" data-value="4">4</div>
+          <div class="draggable" draggable="true" data-value="5">5</div>
+        </div>
+        <div id="drop" class="droppable">🏰</div>
+      `;
+      initDragDrop(4, false, () => {
+        gameContainer.innerHTML = `<h2>🎉恭喜！你找到了最终宝藏！🎉</h2>
+        <p>🏆✨💎✨🏆</p>`;
+        nextBtn.style.display = "none";
+      });
+    }
   }
 ];
 
-// 渲染关卡
-function renderLevel() {
-  gameArea.innerHTML = '';
-  const level = levels[currentLevel];
+// 初始化拖拽逻辑
+function initDragDrop(correct, isBalance=false, callback=null) {
+  const draggables = document.querySelectorAll(".draggable");
+  const drop = document.getElementById("drop");
 
-  const title = document.createElement('h2');
-  title.textContent = level.title;
-  gameArea.appendChild(title);
-
-  if(level.type==='chest'){
-    const chestDiv = document.createElement('div');
-    chestDiv.className='chest';
-    gameArea.appendChild(chestDiv);
-
-    const dropZone = document.createElement('div');
-    dropZone.className='drop-zone';
-    dropZone.textContent='?';
-    chestDiv.appendChild(dropZone);
-
-    const numbersDiv = document.createElement('div');
-    numbersDiv.textContent='拖动正确数字到宝箱：';
-    level.options.forEach(opt=>{
-      const num = document.createElement('div');
-      num.className='number';
-      num.draggable=true;
-      num.textContent=opt;
-      numbersDiv.appendChild(num);
+  draggables.forEach(drag => {
+    drag.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text", e.target.dataset.value);
     });
-    gameArea.appendChild(numbersDiv);
-
-    addDragLogic(dropZone, chestDiv, level.answer);
-  }
-
-  // 其他类型 balance, castle 可扩展
-}
-
-// 拖放逻辑
-function addDragLogic(dropZone, chestDiv, answer){
-  let draggedNumber = null;
-  const numbers = document.querySelectorAll('.number');
-  numbers.forEach(number=>{
-    number.addEventListener('dragstart', e=>{ draggedNumber=e.target; });
   });
 
-  dropZone.addEventListener('dragover', e=>e.preventDefault());
-  dropZone.addEventListener('drop', e=>{
-    const value = parseInt(draggedNumber.textContent);
-    if(Array.isArray(answer)?answer.includes(value):value===answer){
-      dropZone.textContent=value;
-      correctSound.play();
-      chestDiv.classList.add('open');
-      const flash = document.createElement('div');
-      flash.className='flash';
-      chestDiv.appendChild(flash);
-      setTimeout(()=>chestDiv.removeChild(flash),500);
-      treasureSound.play();
-      setTimeout(()=>{
-        currentLevel++;
-        if(currentLevel<levels.length) renderLevel();
-        else gameArea.innerHTML='<h2>恭喜找到终极宝藏 🎉🏆</h2>';
-      },1500);
+  drop.addEventListener("dragover", e => e.preventDefault());
+
+  drop.addEventListener("drop", e => {
+    e.preventDefault();
+    const value = e.dataTransfer.getData("text");
+    
+    let isCorrect = false;
+    if (Array.isArray(correct)) {
+      isCorrect = correct.includes(parseInt(value));
+    } else if (isBalance) {
+      // 简单逻辑：成功即拖动任意水果（可扩展）
+      isCorrect = true;
     } else {
-      wrongSound.play();
-      dropZone.classList.add('shake');
-      setTimeout(()=>dropZone.classList.remove('shake'),300);
+      isCorrect = parseInt(value) === correct;
+    }
+
+    if (isCorrect) {
+      alert("正确！🎉");
+      if (callback) callback();
+      else nextLevel();
+    } else {
+      alert("再试试！❌");
     }
   });
 }
 
-renderLevel();
+function nextLevel() {
+  currentLevel++;
+  if (currentLevel < levels.length) {
+    levels[currentLevel].setup();
+  } else {
+    gameContainer.innerHTML = `<h2>你完成了所有关卡！🎉</h2>`;
+    nextBtn.style.display = "none";
+  }
+}
+
+nextBtn.addEventListener("click", () => {
+  nextBtn.style.display = "none";
+  levels[currentLevel].setup();
+});
+
