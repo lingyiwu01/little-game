@@ -2,64 +2,105 @@ body {
   font-family: 'Arial', sans-serif;
   text-align: center;
   background-color: #fff8e7;
+  margin: 0;
+  padding: 0;
 }
 
-.equation-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
+h1 {
+  margin-top: 20px;
 }
 
-.left-apples img,
-.right-apples img {
-  width: 50px;
-  margin: 0 3px;
-}
-
-.plus, .equals {
-  font-size: 36px;
-  margin: 0 10px;
-}
-
-.chest {
+#game-area {
+  margin-top: 30px;
   position: relative;
-  width: 80px;
-  margin: 0 10px;
 }
 
-.chest img {
-  width: 80px;
+/* 通用宝箱/城堡/天平样式 */
+.chest, .castle, .balance {
+  display: inline-block;
+  position: relative;
+  margin: 20px;
 }
 
-.drop-zone {
+.chest img, .castle img, .balance img {
+  width: 80px;
+  transition: transform 0.5s;
+}
+
+.chest.open img, .castle.open img {
+  transform: translateY(-20px) rotateX(20deg);
+}
+
+.drop-zone, .balance-zone {
   position: absolute;
-  bottom: -20px;
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
   background-color: #ffcc66;
   border-radius: 10px;
   font-size: 24px;
   user-select: none;
 }
 
-.numbers {
-  margin-top: 30px;
-}
-
-.number {
+/* 数字/水果拖动 */
+.number, .fruit {
   display: inline-block;
   width: 50px;
   height: 50px;
   line-height: 50px;
-  margin: 0 10px;
+  margin: 10px;
   background-color: #ffcc66;
   border-radius: 10px;
   font-size: 24px;
   cursor: grab;
   user-select: none;
 }
+
+/* 闪光效果 */
+.flash {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #fffacd 0%, transparent 70%);
+  border-radius: 50%;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flashAnim 0.5s ease-out;
+}
+
+@keyframes flashAnim {
+  0% { opacity: 1; transform: translateX(-50%) scale(0); }
+  50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1); }
+}
+
+/* 苹果/宝藏掉落 */
+.apple-drop, .coin-drop {
+  position: absolute;
+  width: 40px;
+  animation: drop 1s forwards;
+}
+
+@keyframes drop {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
+}
+
+/* 错误震动 */
+.shake {
+  animation: shakeAnim 0.3s;
+}
+
+@keyframes shakeAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
 
