@@ -6,88 +6,46 @@ body {
   padding: 0;
 }
 
-h1 { margin-top: 20px; }
+#game-container {
+  margin: 20px auto;
+  max-width: 600px;
+  min-height: 400px;
+  border: 2px solid #ffcc66;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #fff3d9;
+}
 
-#game-area { margin-top: 30px; position: relative; }
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ff9966;
+  color: white;
+  cursor: pointer;
+}
 
-/* 水果和宝箱形状 */
-.red-circle, .orange-circle, .yellow-triangle, .chest {
+button:hover {
+  background-color: #ff7733;
+}
+
+.draggable {
   display: inline-block;
   margin: 5px;
-}
-
-.red-circle, .orange-circle {
-  width: 50px; height: 50px;
-  border-radius: 50%;
-}
-
-.red-circle { background-color: red; }
-.orange-circle { background-color: orange; }
-
-/* 香蕉三角形 */
-.yellow-triangle {
-  width: 0; height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 50px solid yellow;
-}
-
-.chest {
-  width: 60px; height: 40px;
-  background-color: #8B4513;
-  position: relative;
-}
-
-.drop-zone {
-  width: 50px; height: 50px;
-  line-height: 50px;
-  background-color: #ffcc66;
-  border-radius: 10px;
-  font-size: 24px;
-  display: inline-block;
-  margin-top: 10px;
-  user-select: none;
-}
-
-/* 数字/水果拖动 */
-.number, .fruit {
-  display: inline-block;
-  width: 50px; height: 50px;
-  line-height: 50px;
-  margin: 5px;
-  background-color: #ffcc66;
-  border-radius: 10px;
-  font-size: 24px;
   cursor: grab;
-  user-select: none;
+  font-size: 30px;
 }
 
-/* 宝箱开动画 */
-.chest.open { transform: translateY(-10px); transition: 0.5s; }
-
-/* 闪光 */
-.flash {
-  position: absolute;
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, #fffacd 0%, transparent 70%);
-  border-radius: 50%;
-  top: -20px; left: 50%;
-  transform: translateX(-50%);
-  animation: flashAnim 0.5s ease-out;
-}
-
-@keyframes flashAnim {
-  0% { opacity: 1; transform: translateX(-50%) scale(0); }
-  50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
-  100% { opacity: 0; transform: translateX(-50%) scale(1); }
-}
-
-/* 错误震动 */
-.shake { animation: shakeAnim 0.3s; }
-@keyframes shakeAnim {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+.droppable {
+  display: inline-block;
+  margin: 5px;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border: 2px dashed #ff9966;
+  border-radius: 8px;
+  vertical-align: middle;
+  font-size: 30px;
 }
