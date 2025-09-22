@@ -1,111 +1,102 @@
-const gameArea = document.getElementById('game-area');
-const correctSound = document.getElementById('correct-sound');
-const wrongSound = document.getElementById('wrong-sound');
-const treasureSound = document.getElementById('treasure-sound');
-
-let currentLevel = 0;
-
-const levels = [
-  { // 关卡1：迷宫入门
-    type: 'chest',
-    title: '关卡1：迷宫入门',
-    left: ['red-circle','red-circle','red-circle','red-circle','red-circle'],
-    right: ['red-circle','red-circle','red-circle','red-circle','red-circle','red-circle','red-circle','red-circle'],
-    answer: 3,
-    options: [2,3,4]
-  },
-  { // 关卡2：天平桥
-    type: 'balance',
-    title: '关卡2：天平桥',
-    left: ['red-circle','red-circle','red-circle','orange-circle','orange-circle','orange-circle','orange-circle','orange-circle','orange-circle'],
-    right: ['yellow-triangle','yellow-triangle','yellow-triangle','yellow-triangle','yellow-triangle'],
-    answer: [3,2,5] // 示例答案
-  },
-  { // 关卡3：鸡兔同笼
-    type: 'chest',
-    title: '关卡3：海岛宝箱',
-    left: ['yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken','yellow-triangle-chicken'],
-    right: ['white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square','white-square'],
-    answer: [10,15],
-    options:[5,10,15,20]
-  },
-  { // 关卡4：终极宝藏城堡
-    type: 'castle',
-    title: '关卡4：终极宝藏城堡',
-    question: '(x+2)*2=12',
-    answer: 4,
-    options:[3,4,5]
-  }
-];
-
-// 渲染关卡
-function renderLevel() {
-  gameArea.innerHTML = '';
-  const level = levels[currentLevel];
-
-  const title = document.createElement('h2');
-  title.textContent = level.title;
-  gameArea.appendChild(title);
-
-  if(level.type==='chest'){
-    const chestDiv = document.createElement('div');
-    chestDiv.className='chest';
-    gameArea.appendChild(chestDiv);
-
-    const dropZone = document.createElement('div');
-    dropZone.className='drop-zone';
-    dropZone.textContent='?';
-    chestDiv.appendChild(dropZone);
-
-    const numbersDiv = document.createElement('div');
-    numbersDiv.textContent='拖动正确数字到宝箱：';
-    level.options.forEach(opt=>{
-      const num = document.createElement('div');
-      num.className='number';
-      num.draggable=true;
-      num.textContent=opt;
-      numbersDiv.appendChild(num);
-    });
-    gameArea.appendChild(numbersDiv);
-
-    addDragLogic(dropZone, chestDiv, level.answer);
-  }
-
-  // balance 和 castle 可扩展类似逻辑
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #fff8e7;
+  margin: 0;
+  padding: 0;
 }
 
-// 拖放逻辑
-function addDragLogic(dropZone, chestDiv, answer){
-  let draggedNumber = null;
-  const numbers = document.querySelectorAll('.number');
-  numbers.forEach(number=>{
-    number.addEventListener('dragstart', e=>{ draggedNumber=e.target; });
-  });
+h1 { margin-top: 20px; }
 
-  dropZone.addEventListener('dragover', e=>e.preventDefault());
-  dropZone.addEventListener('drop', e=>{
-    const value = parseInt(draggedNumber.textContent);
-    if(Array.isArray(answer)?answer.includes(value):value===answer){
-      dropZone.textContent=value;
-      correctSound.play();
-      chestDiv.classList.add('open');
-      const flash = document.createElement('div');
-      flash.className='flash';
-      chestDiv.appendChild(flash);
-      setTimeout(()=>chestDiv.removeChild(flash),500);
-      treasureSound.play();
-      setTimeout(()=>{
-        currentLevel++;
-        if(currentLevel<levels.length) renderLevel();
-        else gameArea.innerHTML='<h2>恭喜找到终极宝藏 🎉🏆</h2>';
-      },1500);
-    } else {
-      wrongSound.play();
-      dropZone.classList.add('shake');
-      setTimeout(()=>dropZone.classList.remove('shake'),300);
-    }
-  });
+#game-area { margin-top: 30px; position: relative; }
+
+/* 水果形状 */
+.red-circle, .orange-circle, .yellow-triangle, .yellow-triangle-chicken, .white-square {
+  display: inline-block;
+  margin: 5px;
 }
 
-renderLevel();
+.red-circle, .orange-circle {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+}
+
+.red-circle { background-color: red; }
+.orange-circle { background-color: orange; }
+
+/* 香蕉三角形 */
+.yellow-triangle, .yellow-triangle-chicken {
+  width: 0; height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid yellow;
+}
+
+/* 兔子白色正方形 */
+.white-square {
+  width: 50px; height: 50px;
+  background-color: white;
+  border: 2px solid black;
+}
+
+/* 宝箱矩形 */
+.chest {
+  width: 60px; height: 40px;
+  background-color: #8B4513;
+  position: relative;
+}
+
+.drop-zone {
+  width: 50px; height: 50px;
+  line-height: 50px;
+  background-color: #ffcc66;
+  border-radius: 10px;
+  font-size: 24px;
+  display: inline-block;
+  margin-top: 10px;
+  user-select: none;
+}
+
+/* 数字/拖动 */
+.number, .fruit {
+  display: inline-block;
+  width: 50px; height: 50px;
+  line-height: 50px;
+  margin: 5px;
+  background-color: #ffcc66;
+  border-radius: 10px;
+  font-size: 24px;
+  cursor: grab;
+  user-select: none;
+}
+
+/* 宝箱开动画 */
+.chest.open { transform: translateY(-10px); transition: 0.5s; }
+
+/* 闪光 */
+.flash {
+  position: absolute;
+  width: 100px; height: 100px;
+  background: radial-gradient(circle, #fffacd 0%, transparent 70%);
+  border-radius: 50%;
+  top: -20px; left: 50%;
+  transform: translateX(-50%);
+  animation: flashAnim 0.5s ease-out;
+}
+
+@keyframes flashAnim {
+  0% { opacity: 1; transform: translateX(-50%) scale(0); }
+  50% { opacity: 0.8; transform: translateX(-50%) scale(1.2); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1); }
+}
+
+/* 错误震动 */
+.shake { animation: shakeAnim 0.3s; }
+@keyframes shakeAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
 
