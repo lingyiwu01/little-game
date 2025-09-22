@@ -1,44 +1,60 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #fff8e7; /* 新底色 */
+  background-color: #fff8e7;
   margin: 0;
   padding: 0;
 }
 
 h1 {
   margin-top: 20px;
-  color: #333;
 }
 
 #game-container {
-  margin-top: 40px;
-}
-
-#question {
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
-.option {
-  display: inline-block;
-  margin: 10px;
-  padding: 20px 30px;
-  font-size: 24px;
-  cursor: pointer;
-  border: 3px solid #444;
+  margin: 20px auto;
+  max-width: 600px;
+  min-height: 400px;
+  border: 2px solid #f2c94c;
   border-radius: 12px;
-  background: gold;
-  transition: transform 0.2s, background 0.2s;
+  background-color: #fffef9;
+  padding: 20px;
+  position: relative;
 }
 
-.option:hover {
-  transform: scale(1.1);
-  background: orange;
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #f2994a;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-#message {
-  font-size: 24px;
+button:hover {
+  background-color: #eb6b0d;
+}
+
+.draggable {
+  display: inline-block;
+  cursor: grab;
+  margin: 5px;
+  font-size: 30px;
+}
+
+.droppable {
+  display: inline-block;
+  min-width: 60px;
+  min-height: 60px;
+  border: 2px dashed #f2c94c;
+  border-radius: 8px;
+  vertical-align: middle;
+  margin: 5px;
+  font-size: 30px;
+}
+
+#treasure {
+  font-size: 50px;
   margin-top: 20px;
-  min-height: 30px; /* 防止跳动 */
 }
