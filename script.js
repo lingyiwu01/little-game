@@ -23,7 +23,6 @@ dropZone.addEventListener('drop', e => {
     setTimeout(() => {
       openChestSound.play();
       alert('答对了！宝箱里有 3 个苹果 🍎🎉');
-      // 可以在这里添加宝箱打开动画
     }, 500);
   } else {
     alert('不对哦，再试试！');
